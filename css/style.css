@@ -8,7 +8,7 @@ table {
 }
 
 table, th, td {
-    border: 1px solid white;
+    border: 2px solid white;
     border-collapse: collapse;
   }
 
@@ -21,8 +21,11 @@ td {
 td {
     color: white;
     text-align: center; 
+    padding-top: 6px;
     vertical-align: middle;
-    font-size: larger;
+    border-radius: 8px;
+    font-size: 4em;
+    font-family: "Teko";
     /* no text select for the cell numbers */
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
