@@ -96,7 +96,7 @@ function clickHandler(element) {
         
     }
 
-    // Let s check i we have an empty space below us
+    // Lets check if we have an empty space below us
     if (id + 4 === emptyCell) {
         console.log("We have empty cell below!");
         let newId = id + 4;
@@ -109,6 +109,43 @@ function clickHandler(element) {
         console.log("new empty cell is ", emptyCell);
         return;
     }
+
+    // Checking if the clicked cell is on the same line as the empty cell
+    
+    if (parseInt(id / 4, 10) === parseInt(emptyCell / 4, 10)) {
+
+        console.log ("Emtpty cell and clicked cell are on the same line");
+        // Lets check if we have an empty cell on the right
+        if (id + 1 === emptyCell) {
+            const newId = id + 1;
+            cells[newId].element.innerText = cells[id].element.innerText;
+            cells[id].element.innerText = "";
+            cells[id].element.style.background = cellEmptyColour;
+            cells[newId].element.style.background = cellWithNumberColour;
+            
+            emptyCell = id;
+            console.log("new empty cell is ", emptyCell);
+            return;
+            
+        }
+
+        // Lets check if there is an empty cell on the Left
+        if (id - 1 === emptyCell) {
+            const newId = id - 1;
+            cells[newId].element.innerText = cells[id].element.innerText;
+            cells[id].element.innerText = "";
+            cells[id].element.style.background = cellEmptyColour;
+            cells[newId].element.style.background = cellWithNumberColour;
+            
+            emptyCell = id;
+            console.log("new empty cell is ", emptyCell);
+            return;
+            
+        }
+    }
+
+
+
     // console.log("parseInt(id + 4, 10) is ", parseInt(id + 4, 10))
     // console.log("Our empty cell is ", emptyCell)
     
