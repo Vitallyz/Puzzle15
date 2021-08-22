@@ -24,7 +24,7 @@ td {
     padding-top: 6px;
     vertical-align: middle;
     border-radius: 8px;
-    font-size: 4em;
+    font-size: 3em;
     font-family: "Teko";
     /* no text select for the cell numbers */
     -webkit-touch-callout: none; /* iOS Safari */
@@ -36,8 +36,3 @@ td {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-/* body {
-    background: rgb(255, 174, 0) ;
-    background: rgb(255, 94, 0);
-    }
-        element.target.style.background = "#ff5e00" */

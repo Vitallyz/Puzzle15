@@ -1,5 +1,10 @@
 const cells = [];
 
+const cellWithNumberColour = "#e9c111";
+const cellEmptyColour = "#d4d4d4";
+
+let emptyCell;
+
 class Cell {
     #id;
     #value;
@@ -9,7 +14,12 @@ class Cell {
     constructor (id, element) {
         this.#id = id;
         (id === 15) ? this.#value = "": this.#value = id + 1;
-        (id === 15) ? this.#isEmpty = true : this.#isEmpty = false;
+
+        if (id === 15) {
+            this.#isEmpty = true;
+            emptyCell = id;
+        }
+
         this.#element = element;
     }
 
@@ -39,6 +49,22 @@ class Cell {
 for (let id = 0; id < 16; id++) {
     const element = document.getElementById(`cell_${id}`);
     cells[id] = new Cell(id, element);
+
+}
+
+// Render on screen initial state
+for (let id = 0; id < 16; id++) {
+    if (id !== 15) {
+        console.log(cells[id].element.style.background);
+        cells[id].element.style.background = cellWithNumberColour;
+        cells[id].element.style.color = "white";
+        cells[id].element.innerText = cells[id].value;
+    } else {
+        cells[id].element.style.background = cellEmptyColour;
+        cells[id].element.style.color = "white";
+        cells[id].element.innerText = cells[id].value;
+    }
+    
 }
 
 // Add event listeners to all cells in the table
@@ -46,20 +72,46 @@ for (let id = 0; id < 16; id++) {
     cells[id].element.addEventListener("click", clickHandler);
 }
 
-
-
 function clickHandler(element) {
-    console.log("Thecolor before is ", element.target.style.background);
-// temporary for the toggle test only!
-    if (element.target.style.background === "rgb(255, 174, 0)" || element.target.style.background === "") {
-        element.target.style.background = "rgb(255, 94, 0)";
-    } else {
-        element.target.style.background = "rgb(255, 174, 0)";
+    //console.log("Registered click on element", element.target);
+    const id = parseInt((element.target.id.split("_")[1]), 10);
+    // console.log("Our id is ", id);
+    // Lets check if we have an empty space above us
+    if (id === emptyCell) {
+        console.log("Clicked on empty cell");
+        return;
     }
-    console.log("Thecolor after is ", element.target.style.background);
-    console.log("Registered click on element", element);
+    
+    if ((id - 4 === emptyCell)) {
+        let newId = id - 4;
+        cells[newId].element.innerText = cells[id].element.innerText;
+        cells[id].element.innerText = "";
+        cells[id].element.style.background = cellEmptyColour;
+        cells[newId].element.style.background = cellWithNumberColour;
+
+        emptyCell = id;
+        console.log("new empty cell is ", emptyCell);
+        console.log("We have empty cell above!");
+        return;
+        
+    }
+
+    // Let s check i we have an empty space below us
+    if (id + 4 === emptyCell) {
+        console.log("We have empty cell below!");
+        let newId = id + 4;
+        cells[newId].element.innerText = cells[id].element.innerText;
+        cells[id].element.innerText = "";
+        cells[id].element.style.background = cellEmptyColour;
+        cells[newId].element.style.background = cellWithNumberColour;
+        
+        emptyCell = id;
+        console.log("new empty cell is ", emptyCell);
+        return;
+    }
+    // console.log("parseInt(id + 4, 10) is ", parseInt(id + 4, 10))
+    // console.log("Our empty cell is ", emptyCell)
+    
+
 }
 
-console.log(cells[15].element);
-
-// console.log("array of cells", cells);
