@@ -4,10 +4,10 @@ const thePuzzle15Game = (function () {
     let totalMovesPlayed = 0;
     let gameStarted = false;
     let gameLocked = false;
-    const difficultyLevel = 10; // the higher the number the longer the randumization process
+    const difficultyLevel = 10000; // the higher the number the longer the randumization process
 
     const cellWithNumberColour = "#e9c111";
-    const cellEmptyColour = "#d4d4d4";
+    const cellEmptyColour = "#e3e3e3";
 
     let emptyCell;
 
