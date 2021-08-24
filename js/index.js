@@ -2,6 +2,9 @@
 const thePuzzle15Game = (function () {
     const cells = [];
     let totalMovesPlayed = 0;
+    let gameStarted = false;
+    let gameLocked = false;
+    const difficultyLevel = 10; // the higher the number the longer the randumization process
 
     const cellWithNumberColour = "#e9c111";
     const cellEmptyColour = "#d4d4d4";
@@ -37,6 +40,10 @@ const thePuzzle15Game = (function () {
         }
 
         clicked() {
+
+            if (gameLocked){
+                return;
+            }
             // Lets check if clicked on empty cell
             if (this.#id === emptyCell) {
                 console.log("Clicked on empty cell");
@@ -157,9 +164,10 @@ const thePuzzle15Game = (function () {
             emptyCell = this.#id;
             totalMovesPlayed++;
             // console.log(totalMovesPlayed);
-            if (this.gameIsOver()) {
+            if (gameStarted && this.gameIsOver()) {
                 console.log(`The puzzle is done in ${totalMovesPlayed} moves`);
                 totalMovesPlayed = 0;
+                
             }
         }
 
@@ -171,6 +179,7 @@ const thePuzzle15Game = (function () {
                 }
 
             }
+            gameLocked = true;
             return true;
         }
     }
@@ -191,6 +200,55 @@ const thePuzzle15Game = (function () {
         const id = parseInt((element.target.id.split("_")[1]), 10);
         cells[id].clicked();
     }
+
+    function randomizePuzzle () {
+
+        function performRandomMove () {
+            const randomNumber = Math.random();
+            // if we have a cell above us
+            if (emptyCell - 4 >= 0) {
+                if (randomNumber >= 0 && randomNumber < 0.25) {
+                    cells[emptyCell - 4].clicked();
+                }
+            }
+    
+            // if we have a cell below us
+            if (emptyCell + 4 <= 15) {
+                if (randomNumber >= 0.25 && randomNumber < 0.5) {
+                    cells[emptyCell+ 4].clicked();
+                }
+            }
+    
+            // if we have a cell on the left or riht
+            const normalizedEmptyCell = emptyCell % 4;
+            if (normalizedEmptyCell - 1 >= 0) {
+                if (randomNumber >= 0.5 && randomNumber < 0.75) {
+                    cells[emptyCell - 1].clicked();
+                }
+            }
+    
+            if (normalizedEmptyCell + 1 < 4) {
+                if (randomNumber >= 0.75 && randomNumber < 1) {
+                    cells[emptyCell + 1].clicked();
+                }
+            }
+    
+    
+        }
+
+        for (let i = 0; i < difficultyLevel; i++) {
+            performRandomMove();
+        }
+
+        totalMovesPlayed = 0;
+        gameStarted = true;
+        console.log("Puzzle been randomized");
+        
+    }
+
+ 
+
+    randomizePuzzle();
 
 })(document);
 
