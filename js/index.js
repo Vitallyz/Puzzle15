@@ -17,7 +17,6 @@ const thePuzzle15Game = (function () {
             this.#element = element;
 
             if (id === 15) {
-                // this.#value = "";
                 emptyCell = id;
                 this.#element.style.background = cellEmptyColour;
                 this.#element.style.color = "white";
@@ -26,10 +25,7 @@ const thePuzzle15Game = (function () {
                 this.#element.style.background = cellWithNumberColour;
                 this.#element.style.color = "white";
                 this.#element.innerText = id + 1;
-                // this.#value = id + 1;
             }
-
-           
         }
 
         get id() {
@@ -160,7 +156,22 @@ const thePuzzle15Game = (function () {
             cells[newId].element.style.background = cellWithNumberColour;
             emptyCell = this.#id;
             totalMovesPlayed++;
-            console.log(totalMovesPlayed);
+            // console.log(totalMovesPlayed);
+            if (this.gameIsOver()) {
+                console.log(`The puzzle is done in ${totalMovesPlayed} moves`);
+                totalMovesPlayed = 0;
+            }
+        }
+
+        gameIsOver() {
+            for (let i = 0; i < 15; i++) {
+                if (parseInt(cells[i].element.innerText, 10) !== i + 1) {
+                    // console.log("Game not finished yet");
+                    return false;
+                }
+
+            }
+            return true;
         }
     }
 
