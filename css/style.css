@@ -4,7 +4,7 @@ table {
     height: 400px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 100px;
+    margin-top: 10px;
     table-layout: fixed;
 }
 
@@ -37,3 +37,25 @@ td {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+[type='radio'] {
+    display: none; 
+    }
+
+
+    .switch-toggle {
+        float: left;
+        background: #242729;
+     }
+     .switch-toggle input {
+       position: absolute;
+       opacity: 0;
+     }
+     .switch-toggle input + label {
+       padding: 7px;
+       float:left;
+       color: #fff;
+       cursor: pointer;
+     }
+     .switch-toggle input:checked + label {
+       background: green;
+     }

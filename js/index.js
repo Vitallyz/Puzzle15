@@ -4,7 +4,7 @@ const thePuzzle15Game = (function () {
     let totalMovesPlayed = 0;
     let gameStarted = false;
     let gameLocked = false;
-    const difficultyLevel = 10000; // the higher the number the longer the randumization process
+    const difficultyLevel = 1000; // the higher the number the longer the randumization process
 
     const cellWithNumberColour = "#e9c111";
     const cellEmptyColour = "#e3e3e3";
@@ -249,6 +249,12 @@ const thePuzzle15Game = (function () {
  
 
     randomizePuzzle();
+
+
+    document.getElementById("option5").classList = "active";
+    
+
+
 
 })(document);
 
