@@ -251,8 +251,8 @@ const thePuzzle15Game = (function () {
     randomizePuzzle();
 
 
-    document.getElementById("option5").classList = "active";
-    
+    document.getElementById("option5").classList.add("active");
+    document.getElementById("option4").classList.remove("active");
 
 
 
