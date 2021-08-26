@@ -1,13 +1,57 @@
 
 const thePuzzle15Game = (function () {
+    
+    const difficultyLevelEasy = 10;
+    const difficultyLevelHard = 400;
+    const difficultyLevelMed = 200;
+    
     const cells = [];
     let totalMovesPlayed = 0;
     let gameStarted = false;
     let gameLocked = false;
-    const difficultyLevel = 1000; // the higher the number the longer the randumization process
+    let difficultyLevel = 100; // the higher the number the longer the randumization process
 
-    const cellWithNumberColour = "#e9c111";
-    const cellEmptyColour = "#e3e3e3";
+
+    const timer = {
+        timePlayed: 0,
+        timerId: 0,
+        startTimer () {
+            this.reset();
+            this.timerId = setInterval(() => {
+                // stop at 99:59
+                if (this.timePlayed < 5999) {
+                    document.getElementById("timePlayed").innerText = this.pretty(this.timePlayed++);
+                }
+            }, 1000);
+        },
+        reset () {
+            this.timePlayed = 0;
+            this.stopTimer ();
+            document.getElementById("timePlayed").innerText = "00:00";
+        },
+
+        stopTimer() {
+            clearInterval(this.timerId);
+        },
+
+        pretty () {
+            let minutes = parseInt(this.timePlayed / 60);
+            let seconds = this.timePlayed - minutes*60;
+
+            if (minutes < 10 ) {
+                minutes = `0${minutes}`;
+            }
+
+            if (seconds < 10) {
+                seconds = `0${seconds}`;
+            }
+            
+            return `${minutes}:${seconds}`;
+        }
+    }
+
+    const cellWithNumberColour = "#44CAF0";
+    const cellEmptyColour = "#79DEF5";
 
     let emptyCell;
 
@@ -164,14 +208,16 @@ const thePuzzle15Game = (function () {
             emptyCell = this.#id;
             totalMovesPlayed++;
             // console.log(totalMovesPlayed);
-            if (gameStarted && this.gameIsOver()) {
-                console.log(`The puzzle is done in ${totalMovesPlayed} moves`);
-                totalMovesPlayed = 0;
-                
+            if(gameStarted) {
+                document.getElementById("totalMoves").innerText = totalMovesPlayed;
             }
+            if(gameStarted) {
+                this.isGameOver();
+            }
+            
         }
 
-        gameIsOver() {
+        isGameOver() {
             for (let i = 0; i < 15; i++) {
                 if (parseInt(cells[i].element.innerText, 10) !== i + 1) {
                     // console.log("Game not finished yet");
@@ -180,7 +226,24 @@ const thePuzzle15Game = (function () {
 
             }
             gameLocked = true;
+            gameStarted = false;
+            timer.stopTimer();
+            for (let i = 0; i < 16; i++) {
+                cells[i].element.style.background = "#86DEF5";
+            }
+            console.log("The game is over!");
             return true;
+        }
+
+        reset () {
+            if (this.#id === 15) {
+                emptyCell = this.#id;
+                this.#element.style.background = cellEmptyColour;
+                this.#element.innerText = "";
+            } else {
+                this.#element.style.background = cellWithNumberColour;
+                this.#element.innerText = this.#id + 1;
+            }
         }
     }
 
@@ -189,19 +252,78 @@ const thePuzzle15Game = (function () {
         const element = document.getElementById(`cell_${id}`);
         cells[id] = new Cell(id, element);
     }
+    
+    function resetGame () {
+        gameStarted = false;
+        gameLocked = false;
+        timer.reset();
+        for (let id = 0; id < 16; id++) {
+            cells[id].reset();
+        }
 
+    }
+
+    
+    
 
     // Add event listeners to all cells in the table
     for (let id = 0; id < 16; id++) {
         cells[id].element.addEventListener("click", clickHandler);
     }
 
+    // event listeners for buttons
+    const optEasy = document.getElementById("opt-easy");
+    optEasy.addEventListener("click", handlerOptEasy);
+    
+    const optMed = document.getElementById("opt-med"); 
+    optMed.addEventListener("click", handlerOptMed);
+    
+    const optHard = document.getElementById("opt-hard");
+    optHard.addEventListener("click", handlerOptHard);
+
+
+    
+
+
+    // event handlers
     function clickHandler(element) {
         const id = parseInt((element.target.id.split("_")[1]), 10);
         cells[id].clicked();
     }
 
+    function handlerOptEasy(element){
+        optEasy.parentElement.classList.add("active");
+        optMed.parentElement.classList.remove("active");
+        optHard.parentElement.classList.remove("active");
+        difficultyLevel = difficultyLevelEasy;
+        randomizePuzzle ();
+    }
+    function handlerOptMed(element){
+        optEasy.parentElement.classList.remove("active");
+        optMed.parentElement.classList.add("active");
+        optHard.parentElement.classList.remove("active");
+        difficultyLevel = difficultyLevelMed;
+        randomizePuzzle ();
+    }
+    function handlerOptHard(element){
+        optEasy.parentElement.classList.remove("active");
+        optMed.parentElement.classList.remove("active");
+        optHard.parentElement.classList.add("active");
+        difficultyLevel = difficultyLevelHard;
+        randomizePuzzle ();
+    }
+
+
+
+
+    // functionalities
+
+ 
+ 
     function randomizePuzzle () {
+
+        resetGame();
+        
 
         function performRandomMove () {
             const randomNumber = Math.random();
@@ -241,8 +363,9 @@ const thePuzzle15Game = (function () {
         }
 
         totalMovesPlayed = 0;
+        document.getElementById("totalMoves").innerText = totalMovesPlayed;
+        timer.startTimer();
         gameStarted = true;
-        console.log("Puzzle been randomized");
         
     }
 
@@ -251,8 +374,7 @@ const thePuzzle15Game = (function () {
     randomizePuzzle();
 
 
-    document.getElementById("option5").classList.add("active");
-    document.getElementById("option4").classList.remove("active");
+  
 
 
 

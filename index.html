@@ -24,35 +24,64 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" style="width: 250px; margin: 5px;">
-                        <label class="btn btn-outline-primary btn-sm">
-                            <input type="radio" name="options-easy" id="option1" autocomplete="off"> Easy
+                        <label class="btn btn-outline-info btn-sm">
+                            <input type="radio" name="options-easy" id="opt-easy" autocomplete="off"> Easy
                         </label>
-                        <label class="btn btn-outline-primary btn-sm active">
-                            <input type="radio" name="options-medium" id="option2" autocomplete="off"> Medium
+                        <label class="btn btn-outline-info btn-sm active">
+                            <input type="radio" name="options-medium" id="opt-med" autocomplete="off"> Medium
                         </label>
-                        <label class="btn btn-outline-primary btn-sm">
-                            <input type="radio" name="options-hard" id="option3" autocomplete="off"> Hard
-                        </label>
-                    </div>
-                </div>
-             
-            </div>
-            <div class="row">
-                <div class="col-sm">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons" style="width: 250px; margin: 5px;">
-                        <label class="btn btn-outline-primary btn-md active" id="option4">
-                            <input type="radio" name="options-numbers"  autocomplete="off" checked=""> Numbers
-                        </label>
-                        <label class="btn btn-outline-primary btn-md" id="option5">
-                            <input type="radio" name="options-pictures"  autocomplete="off" checked="checked"> Pictures
+                        <label class="btn btn-outline-info btn-sm">
+                            <input type="radio" name="options-hard" id="opt-hard" autocomplete="off"> Hard
                         </label>
                     </div>
-                </div>
-             
             </div>
- 
+             
         </div>
+        
+        <div class="row">
+            <div class="col-sm">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" style="width: 250px; margin: 5px;">
+                    <label class="btn btn-outline-info btn-md active" id="option4">
+                        <input type="radio" name="options-numbers"  autocomplete="off"> Numbers
+                    </label>
+                    <label class="btn btn-outline-info btn-md" id="option5">
+                        <input type="radio" name="options-pictures"  autocomplete="off"> Pictures
+                    </label>
+                </div>
+            </div>
+             
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="btn-group btn-group-toggle gap-2" data-toggle="buttons" style="width: 250px; margin: 5px;">
+                    <label class="btn btn-outline-info btn-md" id="option4">
+                        <input type="radio" name="options-numbers"  autocomplete="off"> Prev
+                    </label>
+                    <label class="btn btn-outline-info btn-md" id="option5">
+                        <input type="radio" name="options-pictures"  autocomplete="off"> Random
+                    </label>
+                    <label class="btn btn-outline-info btn-md" id="option5">
+                        <input type="radio" name="options-pictures"  autocomplete="off"> Next
+                    </label>
+                </div>
+            </div>
+             
+        </div>
+    </container>   
 
+        <div class="container">
+          
+            <div class="row justify-content-center" style="margin-top: 10px;">
+              <div class="col-2">
+                <h3 id="timePlayed">00:00</h3>
+              </div>
+              <div class="col-2">
+                <h3 id="totalMoves">0</h3>
+              </div>
+            </div>
+   
+        </div>
+    </container> 
 
     
 
@@ -84,7 +113,7 @@
         </table>
 
         <div id="image"></div>
-    </container>
+    
     <script src="./js/index.js"></script>
 
     <!-- Optional JavaScript; choose one of the two! -->
