@@ -371,7 +371,7 @@ const thePuzzle15Game = (function () {
 
  
 
-    randomizePuzzle();
+   
 
 
   
