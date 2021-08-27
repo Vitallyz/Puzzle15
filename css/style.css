@@ -4,12 +4,13 @@ table {
     height: 400px;
     margin-left: auto;
     margin-right: auto;
-    table-layout: fixed;
+    
 }
 
-table, th, td {
+table, td {
     border: 2px solid white;
     border-collapse: collapse;
+    table-layout: fixed;
   }
 
 td {
@@ -19,6 +20,7 @@ td {
 }
 
 td {
+    position: relative;
     color: white;
     text-align: center; 
     padding-top: 6px;
@@ -36,10 +38,14 @@ td {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+
 [type='radio'] {
     display: none; 
 }
-[type='checkbox'] {
-    display: none; 
-}
+
+
+
+
+
+
 

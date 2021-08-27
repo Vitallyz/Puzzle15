@@ -73,10 +73,10 @@
           
             <div class="row justify-content-center" style="margin-top: 10px;">
               <div class="col-2">
-                <h3 id="timePlayed">00:00</h3>
+                <h4 id="timePlayed">00:00</h4>
               </div>
               <div class="col-2">
-                <h3 id="totalMoves">0</h3>
+                <h4 id="totalMoves">0</h4>
               </div>
             </div>
    
@@ -114,7 +114,39 @@
 
         <div id="image"></div>
     
-    <script src="./js/index.js"></script>
+    
+    
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="gameDoneModal" tabindex="-1" role="dialog" aria-labelledby="gameDoneLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="gameDoneLabel">Congratulations!</h5>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body text-start" id="modalBodyMessage">
+          You solved the puzzle in ## moves in just ## minutes and ## seconds! 
+        </div>
+        <div class="modal-footer">
+          <button id="colseModal" type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+    
+    
+    
+        
+
+
+
 
     <!-- Optional JavaScript; choose one of the two! -->
 
@@ -123,8 +155,8 @@
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
-    -->
+   <script src="./js/index.js"></script>
   </body>
 </html>

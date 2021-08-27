@@ -1,12 +1,13 @@
 
 const thePuzzle15Game = (function () {
     
-    const difficultyLevelEasy = 10;
+    const difficultyLevelEasy = 5;
     const difficultyLevelMed = 100;
-    const difficultyLevelHard = 400;
+    const difficultyLevelHard = 200;
     
     
     const cells = [];
+    let modalView = "";
     let totalMovesPlayed = 0;
     let gameStarted = false;
     let gameLocked = true;
@@ -48,6 +49,33 @@ const thePuzzle15Game = (function () {
             }
             
             return `${minutes}:${seconds}`;
+        },
+
+        timeString () {
+            let minutes = parseInt(this.timePlayed / 60);
+            let seconds = this.timePlayed - minutes*60;
+            
+            if (minutes > 1  ) {
+                minutes = `${minutes} minutes and `;
+            } else if (minutes = 1) {
+                minutes = `${minutes} minute and `
+            } else if (minutes = 0) {
+                minutes = "";
+            }  
+
+            if (seconds > 1  ) {
+                seconds = `${seconds} seconds`;
+            } else if (seconds = 1) {
+                seconds = `${seconds} second`
+            } else if (seconds = 0) {
+                seconds = "";
+            }  
+
+            if (seconds > 0) {
+                seconds = `0${seconds}`;
+            }
+            
+            return `${minutes}${seconds}`;
         }
     }
 
@@ -233,6 +261,9 @@ const thePuzzle15Game = (function () {
                 cells[i].element.style.background = "#86DEF5";
             }
             console.log("The game is over!");
+            const score = getScore();
+            console.log("Score is:", score);
+            showModal(score);
             return true;
         }
 
@@ -248,22 +279,7 @@ const thePuzzle15Game = (function () {
         }
     }
 
-    // fix for the window width 
-    function handleWindowResize() {
-        if (window.innerWidth < 475){
-            document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.8) + "px";
-            document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.8) + "px";
-        }
-    
-        document.querySelectorAll("td").forEach(element => { 
-            if (window.innerWidth < 475) {
-                element.style.fontSize = "2em";
-            }
-            
-            
-        });
-            
-    }
+
 
     // initializing array of Cell class instances 
     for (let id = 0; id < 16; id++) {
@@ -281,9 +297,52 @@ const thePuzzle15Game = (function () {
 
     }
 
+    function getScore () {
+        const time = timer.timePlayed;
+        const moves = totalMovesPlayed;
+        let score = 0;
+        if (difficultyLevel === difficultyLevelEasy) {
+            score = (25 - moves) * 0.025/2;
+            if (score < 0) {
+                score = 0;
+            }
+        }
+
+        if (difficultyLevel === difficultyLevelMed) {
+            const scorePartOne = (25 - moves/8) * 0.025;
+            if (scorePartOne < 0) {
+                scorePartOne = 0;
+            }
+            const scorePartTwo = 0.5 / 100 * (110 - time);
+            if (scorePartTwo < 0) {
+                scorePartTwo = 0;
+            }
+
+            score = scorePartOne + scorePartTwo;
+        }
+
+        if (difficultyLevel === difficultyLevelHard) {
+            const scorePartOne = (25 - moves/10) * 0.025;
+            if (scorePartOne < 0) {
+                scorePartOne = 0;
+            }
+            const scorePartTwo = 1/100 * (110 - time);
+            if (scorePartTwo < 0) {
+                scorePartTwo = 0;
+            }
+
+            score = scorePartOne + scorePartTwo;
+        }
+
+        return ~~(score*100);
+    }
+
     
     //event listener for windows resize
     window.addEventListener("resize", handleWindowResize);
+
+    // even listener for modal close button
+    document.getElementById("colseModal").addEventListener("click", handlerModalClose);
 
     // Add event listeners to all cells in the table
     for (let id = 0; id < 16; id++) {
@@ -332,6 +391,30 @@ const thePuzzle15Game = (function () {
         randomizePuzzle ();
     }
 
+    // fix for the window width 
+    function handleWindowResize() {
+        if (window.innerWidth < 475){
+            document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.8) + "px";
+            document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.8) + "px";
+        }
+    
+        document.querySelectorAll("td").forEach(element => { 
+            if (window.innerWidth < 475) {
+                element.style.fontSize = "2em";
+            }
+            
+            
+        });
+            
+    }
+
+    handleWindowResize();
+
+    // hide modal view
+    function handlerModalClose (element) {
+        modalView.hide();
+
+    }
 
 
 
@@ -390,11 +473,38 @@ const thePuzzle15Game = (function () {
 
  
 
-   
+   // handling modal view
+function showModal (score) {
+    
+    
+
+    modalView = new bootstrap.Modal(document.getElementById("gameDoneModal"), {});
+
+    let scoreText = "";
+    if (score > 0 ) {
+        scoreText = ` Your score is ${score}!`
+    } 
+
+    let movesText = "";
+    if (totalMovesPlayed > 1) {
+        movesText = `${totalMovesPlayed} moves`;
+    } else {
+        movesText = `${totalMovesPlayed} move`;
+    }
 
 
-  
+    let bodyMessage = `You solved the puzzle in ${movesText} in just ${timer.timeString()}!${scoreText}`;
+    console.log(bodyMessage);
+    document.getElementById("modalBodyMessage").innerText = bodyMessage;
+    modalView.show();
 
+}
+
+ 
+/* document.getElementById("cell_0").innerHTML = `<img src="https://picsum.photos/97" style="vertical-align: top; display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
+document.getElementById("cell_0").style.padding ="0";
+document.getElementById("cell_0").style.margin ="0";
+document.getElementById("cell_0").style.height = 100; */
 
 
 })(document);
