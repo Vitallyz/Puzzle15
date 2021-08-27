@@ -2,13 +2,14 @@
 const thePuzzle15Game = (function () {
     
     const difficultyLevelEasy = 10;
-    const difficultyLevelHard = 400;
     const difficultyLevelMed = 200;
+    const difficultyLevelHard = 400;
+    
     
     const cells = [];
     let totalMovesPlayed = 0;
     let gameStarted = false;
-    let gameLocked = false;
+    let gameLocked = true;
     let difficultyLevel = 100; // the higher the number the longer the randumization process
 
 
