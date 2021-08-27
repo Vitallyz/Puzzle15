@@ -249,6 +249,16 @@ const thePuzzle15Game = (function () {
     }
 
     // initializing array of Cell class instances 
+    document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.6) + "px";
+    document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.6) + "px";
+    document.querySelectorAll("td").forEach(element => { 
+        if (~~(window.innerWidth  * 0.6) < 285) {
+            element.style.fontSize = "2em";
+        }
+        
+        
+    });
+    console.log("The width of table is: ", document.getElementById("puzzle15game").style.width);
     for (let id = 0; id < 16; id++) {
         const element = document.getElementById(`cell_${id}`);
         cells[id] = new Cell(id, element);
@@ -265,7 +275,8 @@ const thePuzzle15Game = (function () {
     }
 
     
-    
+    //event listener for windows resize
+
 
     // Add event listeners to all cells in the table
     for (let id = 0; id < 16; id++) {
