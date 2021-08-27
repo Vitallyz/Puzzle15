@@ -2,7 +2,7 @@
 const thePuzzle15Game = (function () {
     
     const difficultyLevelEasy = 10;
-    const difficultyLevelMed = 200;
+    const difficultyLevelMed = 100;
     const difficultyLevelHard = 400;
     
     
@@ -249,8 +249,11 @@ const thePuzzle15Game = (function () {
     }
 
     // initializing array of Cell class instances 
-    document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.6) + "px";
-    document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.6) + "px";
+    if (~~(window.innerWidth  * 0.6) < 285){
+        document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.7) + "px";
+        document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.7) + "px";
+    }
+
     document.querySelectorAll("td").forEach(element => { 
         if (~~(window.innerWidth  * 0.6) < 285) {
             element.style.fontSize = "2em";
