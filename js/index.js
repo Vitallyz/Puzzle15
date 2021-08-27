@@ -248,20 +248,24 @@ const thePuzzle15Game = (function () {
         }
     }
 
-    // initializing array of Cell class instances 
-    if (~~(window.innerWidth  * 0.6) < 285){
-        document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.7) + "px";
-        document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.7) + "px";
+    // fix for the window width 
+    function handleWindowResize() {
+        if (window.innerWidth < 475){
+            document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.8) + "px";
+            document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.8) + "px";
+        }
+    
+        document.querySelectorAll("td").forEach(element => { 
+            if (window.innerWidth < 475) {
+                element.style.fontSize = "2em";
+            }
+            
+            
+        });
+            
     }
 
-    document.querySelectorAll("td").forEach(element => { 
-        if (~~(window.innerWidth  * 0.6) < 285) {
-            element.style.fontSize = "2em";
-        }
-        
-        
-    });
-    console.log("The width of table is: ", document.getElementById("puzzle15game").style.width);
+    // initializing array of Cell class instances 
     for (let id = 0; id < 16; id++) {
         const element = document.getElementById(`cell_${id}`);
         cells[id] = new Cell(id, element);
@@ -279,7 +283,7 @@ const thePuzzle15Game = (function () {
 
     
     //event listener for windows resize
-
+    window.addEventListener("resize", handleWindowResize);
 
     // Add event listeners to all cells in the table
     for (let id = 0; id < 16; id++) {
