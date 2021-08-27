@@ -53,27 +53,25 @@ const thePuzzle15Game = (function () {
 
         timeString () {
             let minutes = parseInt(this.timePlayed / 60);
+            console.log("minutes: ", this.timePlayed / 60);
+            console.log("minutes fixed: ", minutes);
             let seconds = this.timePlayed - minutes*60;
             
             if (minutes > 1  ) {
                 minutes = `${minutes} minutes and `;
-            } else if (minutes = 1) {
+            } else if (minutes === 1) {
                 minutes = `${minutes} minute and `
-            } else if (minutes = 0) {
+            } else if (minutes === 0) {
                 minutes = "";
             }  
 
             if (seconds > 1  ) {
                 seconds = `${seconds} seconds`;
-            } else if (seconds = 1) {
+            } else if (seconds === 1) {
                 seconds = `${seconds} second`
-            } else if (seconds = 0) {
-                seconds = "";
+            } else if (seconds === 0) {
+                seconds = `${seconds} seconds`
             }  
-
-            if (seconds > 0) {
-                seconds = `0${seconds}`;
-            }
             
             return `${minutes}${seconds}`;
         }
