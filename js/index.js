@@ -91,10 +91,7 @@ const thePuzzle15Game = (function () {
             this.#id = id;
             this.#element = element;
             this.#value = id + 1;
-            this.renderCell();
-
-
-            
+            this.renderCell();   
         }
         // getters and setters
         get id() {
@@ -316,11 +313,11 @@ const thePuzzle15Game = (function () {
         }
 
         if (difficultyLevel === difficultyLevelMed) {
-            const scorePartOne = (25 - moves/8) * 0.025;
+            let scorePartOne = (25 - moves/8) * 0.025;
             if (scorePartOne < 0) {
                 scorePartOne = 0;
             }
-            const scorePartTwo = 0.5 / 100 * (110 - time);
+            let scorePartTwo = 0.5 / 100 * (110 - time);
             if (scorePartTwo < 0) {
                 scorePartTwo = 0;
             }
@@ -329,11 +326,11 @@ const thePuzzle15Game = (function () {
         }
 
         if (difficultyLevel === difficultyLevelHard) {
-            const scorePartOne = (25 - moves/10) * 0.025;
+            let  scorePartOne = (25 - moves/10) * 0.025;
             if (scorePartOne < 0) {
                 scorePartOne = 0;
             }
-            const scorePartTwo = 1/100 * (110 - time);
+            let scorePartTwo = 1/100 * (110 - time);
             if (scorePartTwo < 0) {
                 scorePartTwo = 0;
             }
