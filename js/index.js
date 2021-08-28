@@ -53,8 +53,6 @@ const thePuzzle15Game = (function () {
 
         timeString () {
             let minutes = parseInt(this.timePlayed / 60);
-            console.log("minutes: ", this.timePlayed / 60);
-            console.log("minutes fixed: ", minutes);
             let seconds = this.timePlayed - minutes*60;
             
             if (minutes > 1  ) {
@@ -123,6 +121,15 @@ const thePuzzle15Game = (function () {
                 this.#element.style.background = cellEmptyColour;
             } else {
                 this.#element.style.background = cellWithNumberColour;
+            }
+
+
+            if (this.#value === 5) {
+
+                this.#element.innerHTML = `<img src="https://picsum.photos/97" id="img_${this.#id}" style="vertical-align: top; display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
+                
+
+
             }
         }
 
