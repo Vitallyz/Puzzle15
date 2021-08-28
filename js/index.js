@@ -1,7 +1,7 @@
 
 const thePuzzle15Game = (function () {
     
-    const difficultyLevelEasy = 5;
+    const difficultyLevelEasy = 10;
     const difficultyLevelMed = 100;
     const difficultyLevelHard = 200;
     
@@ -80,7 +80,7 @@ const thePuzzle15Game = (function () {
     const cellWithNumberColour = "#44CAF0";
     const cellEmptyColour = "#79DEF5";
 
-    let emptyCell;
+    let emptyCell = 15;
 
     class Cell {
         #id;
@@ -90,7 +90,13 @@ const thePuzzle15Game = (function () {
         constructor (id, element) {
             this.#id = id;
             this.#element = element;
-            this.#value = id + 1;
+            this.#element.style.color = "white";
+            if (id !== 15) {
+                this.#value = id + 1;
+            } else {
+                this.#value = "";
+            }
+            
             this.renderCell();   
         }
         // getters and setters
@@ -102,17 +108,21 @@ const thePuzzle15Game = (function () {
             return this.#element;
         }
 
-        renderCell () {
+        get value () {
+            return this.#value;
+        }
 
-            if (this.#id === 15) {
-                emptyCell = this.#id;
+        set value (value) {
+            return this.#value = value;
+        }
+
+        renderCell () {
+            this.#element.innerText = this.#value;
+
+            if (this.#id === emptyCell) {
                 this.#element.style.background = cellEmptyColour;
-                this.#element.style.color = "white";
-                this.#element.innerText = "";
             } else {
                 this.#element.style.background = cellWithNumberColour;
-                this.#element.style.color = "white";
-                this.#element.innerText = this.#value;
             }
         }
 
@@ -233,21 +243,21 @@ const thePuzzle15Game = (function () {
 
         }
 
-        swapCells (newId) {
-            cells[newId].element.innerText = this.#element.innerText;
-            this.#element.innerText = "";
-            this.#element.style.background = cellEmptyColour;
-            cells[newId].element.style.background = cellWithNumberColour;
-            emptyCell = this.#id;
+        swapCells (newId) {            
+            emptyCell = this.#id; 
+            cells[newId].value = this.#value;
+            this.#value = "";
+            
+            cells[newId].renderCell();
+            this.renderCell();
+                       
             totalMovesPlayed++;
+            
             // console.log(totalMovesPlayed);
             if(gameStarted) {
                 document.getElementById("totalMoves").innerText = totalMovesPlayed;
-            }
-            if(gameStarted) {
                 this.isGameOver();
-            }
-            
+            }            
         }
 
         isGameOver() {
@@ -256,8 +266,9 @@ const thePuzzle15Game = (function () {
                     // console.log("Game not finished yet");
                     return false;
                 }
-
             }
+
+            // the game is over, lets lock it and show a modal window with the outcomes.
             gameLocked = true;
             gameStarted = false;
             timer.stopTimer();
@@ -274,12 +285,12 @@ const thePuzzle15Game = (function () {
         reset () {
             if (this.#id === 15) {
                 emptyCell = this.#id;
-                this.#element.style.background = cellEmptyColour;
-                this.#element.innerText = "";
+                this.#value = "";
             } else {
-                this.#element.style.background = cellWithNumberColour;
-                this.#element.innerText = this.#id + 1;
+                this.#value = this.#id + 1;
             }
+
+            this.renderCell();
         }
     }
 
