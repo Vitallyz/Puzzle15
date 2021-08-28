@@ -85,29 +85,38 @@ const thePuzzle15Game = (function () {
     class Cell {
         #id;
         #element;
+        #value;
 
         constructor (id, element) {
             this.#id = id;
             this.#element = element;
+            this.#value = id + 1;
+            this.renderCell();
 
-            if (id === 15) {
-                emptyCell = id;
-                this.#element.style.background = cellEmptyColour;
-                this.#element.style.color = "white";
-                this.#element.innerText = "";
-            } else {
-                this.#element.style.background = cellWithNumberColour;
-                this.#element.style.color = "white";
-                this.#element.innerText = id + 1;
-            }
+
+            
         }
-
+        // getters and setters
         get id() {
             return this.#id;
         }
 
         get element() {
             return this.#element;
+        }
+
+        renderCell () {
+
+            if (this.#id === 15) {
+                emptyCell = this.#id;
+                this.#element.style.background = cellEmptyColour;
+                this.#element.style.color = "white";
+                this.#element.innerText = "";
+            } else {
+                this.#element.style.background = cellWithNumberColour;
+                this.#element.style.color = "white";
+                this.#element.innerText = this.#value;
+            }
         }
 
         clicked() {
