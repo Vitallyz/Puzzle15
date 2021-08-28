@@ -124,10 +124,47 @@ const thePuzzle15Game = (function () {
             }
 
 
-            if (this.#value === 5) {
+            if (this.#value > 0 && this.#value < 16) {
 
-                this.#element.innerHTML = `<img src="https://picsum.photos/97" id="img_${this.#id}" style="vertical-align: top; display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
+                const img = document.createElement("img");
+
+                // img.src = "https://picsum.photos/97";
+                // https://picsum.photos/id/237/200/300
+                img.src = "https://picsum.photos/id/237/400/400";
+
+                document.getElementById("image").src = "https://picsum.photos/id/237/400/400";
                 
+                img.id = `img_${this.#id}`;
+                img.style.verticalAlign = "top";
+                img.style.borderRadius = "4px";
+                img.style.display = "inline";
+                img.style.position = "absolute";
+                img.style.top = 0;
+                img.style.left = 0;
+
+                // this.#element.appendChild(img);
+
+                this.#element.innerHTML = `<canvas id="canvas_${this.#id}" width="97" height="97" style="border:0px solid #d3d3d3; display: inline; top: 0; left: 0; border-radius: 4px; position: absolute;">
+                Your browser does not support the HTML5 canvas tag.
+                </canvas>`;
+
+                var c = document.getElementById(`canvas_${this.#id}`);
+                console.log("my canvas element: ", c);
+                var ctx = c.getContext("2d");
+                // var img = document.getElementById("scream");
+                
+                const x_offset = ((this.#value - 1) % 4) * 100;
+                const y_offset = ~~((this.#value - 1) / 4) * 100;;
+
+                ctx.drawImage(img, x_offset, y_offset, 97, 97, 0, 0, 97, 97);
+                
+
+                
+                // this.#element.innerHTML = `<img src="https://picsum.photos/97" id="img_${this.#id}" style="heigt:100px; vertical-align: top; 
+                // display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
+                
+                this.#element.style.height = "100px";
+                // document.getElementById("cell_0").style.height = 100;
 
 
             }
@@ -269,7 +306,7 @@ const thePuzzle15Game = (function () {
 
         isGameOver() {
             for (let i = 0; i < 15; i++) {
-                if (parseInt(cells[i].element.innerText, 10) !== i + 1) {
+                if (parseInt(cells[i].value, 10) !== i + 1) {
                     // console.log("Game not finished yet");
                     return false;
                 }
