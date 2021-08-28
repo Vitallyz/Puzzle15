@@ -1,7 +1,7 @@
 
 const thePuzzle15Game = (function () {
     
-    const difficultyLevelEasy = 10;
+    const difficultyLevelEasy = 0;
     const difficultyLevelMed = 100;
     const difficultyLevelHard = 200;
     
@@ -11,6 +11,7 @@ const thePuzzle15Game = (function () {
     let totalMovesPlayed = 0;
     let gameStarted = false;
     let gameLocked = true;
+    let gameTypeIsNumbers = true;
     let difficultyLevel = 100; // the higher the number the longer the randumization process
 
 
@@ -115,59 +116,74 @@ const thePuzzle15Game = (function () {
         }
 
         renderCell () {
-            this.#element.innerText = this.#value;
+            
+            if (gameTypeIsNumbers) {
+                this.#element.innerText = this.#value;
 
-            if (this.#id === emptyCell) {
-                this.#element.style.background = cellEmptyColour;
+                if (this.#id === emptyCell) {
+                    this.#element.style.background = cellEmptyColour;
+                } else {
+                    this.#element.style.background = cellWithNumberColour;
+                }    
             } else {
-                this.#element.style.background = cellWithNumberColour;
+                // game type is pictures
+
+
+
+                if (this.#value > 0 && this.#value < 16) {
+
+                    const img = document.createElement("img");
+    
+                    // img.src = "https://picsum.photos/97";
+                    // https://picsum.photos/id/237/200/300
+                    img.src = "https://picsum.photos/id/237/400/400";
+    
+                    // document.getElementById("image").src = "https://picsum.photos/id/237/400/400";
+                    document.getElementById("image").src = "https://picsum.photos/id/237/400/400";
+                    img.id = `img_${this.#id}`;
+                    img.style.verticalAlign = "top";
+                    img.style.borderRadius = "4px";
+                    img.style.display = "inline";
+                    img.style.position = "absolute";
+                    img.style.top = 0;
+                    img.style.left = 0;
+    
+                    // this.#element.appendChild(img);
+    
+                    this.#element.innerHTML = `<canvas id="canvas_${this.#id}" width="97" height="97" style="border:2px solid #d3d3d3; display: inline; top: 0; left: 0; border-radius: 4px; position: absolute;">
+                    Your browser does not support the HTML5 canvas tag.
+                    </canvas>`;
+    
+                    var c = document.getElementById(`canvas_${this.#id}`);
+                    // console.log("my canvas element: ", c);
+                    var ctx = c.getContext("2d");
+                    // var img = document.getElementById("scream");
+                    
+                    const x_offset = ((this.#value - 1) % 4) * 100;
+                    const y_offset = ~~((this.#value - 1) / 4) * 100;;
+    
+                    ctx.drawImage(img, x_offset, y_offset, 97, 97, 0, 0, 97, 97);
+                    
+    
+                    
+                    // this.#element.innerHTML = `<img src="https://picsum.photos/97" id="img_${this.#id}" style="heigt:100px; vertical-align: top; 
+                    // display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
+                    
+                    this.#element.style.height = "100px";
+                    // document.getElementById("cell_0").style.height = 100;
+    
+    
+                } else { // if (this.#value = "") {
+                    
+                    this.#element.innerText = "";
+                    this.#element.style.background = cellEmptyColour;
+
+                }
+
             }
+            
+            
 
-
-            if (this.#value > 0 && this.#value < 16) {
-
-                const img = document.createElement("img");
-
-                // img.src = "https://picsum.photos/97";
-                // https://picsum.photos/id/237/200/300
-                img.src = "https://picsum.photos/id/237/400/400";
-
-                document.getElementById("image").src = "https://picsum.photos/id/237/400/400";
-                
-                img.id = `img_${this.#id}`;
-                img.style.verticalAlign = "top";
-                img.style.borderRadius = "4px";
-                img.style.display = "inline";
-                img.style.position = "absolute";
-                img.style.top = 0;
-                img.style.left = 0;
-
-                // this.#element.appendChild(img);
-
-                this.#element.innerHTML = `<canvas id="canvas_${this.#id}" width="97" height="97" style="border:0px solid #d3d3d3; display: inline; top: 0; left: 0; border-radius: 4px; position: absolute;">
-                Your browser does not support the HTML5 canvas tag.
-                </canvas>`;
-
-                var c = document.getElementById(`canvas_${this.#id}`);
-                console.log("my canvas element: ", c);
-                var ctx = c.getContext("2d");
-                // var img = document.getElementById("scream");
-                
-                const x_offset = ((this.#value - 1) % 4) * 100;
-                const y_offset = ~~((this.#value - 1) / 4) * 100;;
-
-                ctx.drawImage(img, x_offset, y_offset, 97, 97, 0, 0, 97, 97);
-                
-
-                
-                // this.#element.innerHTML = `<img src="https://picsum.photos/97" id="img_${this.#id}" style="heigt:100px; vertical-align: top; 
-                // display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
-                
-                this.#element.style.height = "100px";
-                // document.getElementById("cell_0").style.height = 100;
-
-
-            }
         }
 
         clicked() {
@@ -328,7 +344,6 @@ const thePuzzle15Game = (function () {
 
         reset () {
             if (this.#id === 15) {
-                emptyCell = this.#id;
                 this.#value = "";
             } else {
                 this.#value = this.#id + 1;
@@ -350,6 +365,7 @@ const thePuzzle15Game = (function () {
         gameStarted = false;
         gameLocked = false;
         timer.reset();
+        emptyCell = 15;
         for (let id = 0; id < 16; id++) {
             cells[id].reset();
         }
@@ -397,7 +413,7 @@ const thePuzzle15Game = (function () {
     }
 
     
-    //event listener for windows resize
+    //event listener for windows resize (probably need to remove this functionality)
     window.addEventListener("resize", handleWindowResize);
 
     // even listener for modal close button
@@ -418,6 +434,11 @@ const thePuzzle15Game = (function () {
     const optHard = document.getElementById("opt-hard");
     optHard.addEventListener("click", handlerOptHard);
 
+    const optNumbers = document.getElementById("opt-numbers");
+    optNumbers.addEventListener("click", handleOptNumbers);
+
+    const optPictures = document.getElementById("opt-pictures");
+    optPictures.addEventListener("click", handleOptPictures);
 
     
 
@@ -448,6 +469,20 @@ const thePuzzle15Game = (function () {
         optHard.parentElement.classList.add("active");
         difficultyLevel = difficultyLevelHard;
         randomizePuzzle ();
+    }
+
+    function handleOptNumbers (element) {
+        optNumbers.parentElement.classList.add("active");
+        optPictures.parentElement.classList.remove("active");
+        gameTypeIsNumbers = true;
+        resetGame();
+    }
+
+    function handleOptPictures (element) {
+        optNumbers.parentElement.classList.remove("active");
+        optPictures.parentElement.classList.add("active");
+        gameTypeIsNumbers = false;
+        resetGame();
     }
 
     // fix for the window width 
