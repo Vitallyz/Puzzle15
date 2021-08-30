@@ -119,9 +119,29 @@ const thePuzzle15Game = (function () {
         }
 
         renderCell () {
-            const img = document.createElement("img");
-                   
-            img.src = "https://picsum.photos/id/237/400/400";
+            let displayNumbers = "";
+            let displayCanvas = "";
+            let displayReference = "";
+            if (gameTypeIsNumbers) {
+                displayNumbers = "display:inline;";
+                displayCanvas = "display:none;";
+                displayReference = "none";
+            } else {
+                displayNumbers = "display:none;"
+                displayCanvas = "display:inline;"
+                displayReference = "inline";
+            }
+
+            const imgReference = document.getElementById("image");  
+            imgReference.src = `https://picsum.photos/id/237/${tableSize}/${tableSize}`;
+            imgReference.style.display = displayReference;
+      
+            
+            
+            const img = document.createElement("img");  
+            img.src = `https://picsum.photos/id/237/${tableSize}/${tableSize}`;
+            
+            
     
             if (this.#id === emptyCell) {
                 this.#element.style.background = cellEmptyColour;
@@ -129,15 +149,7 @@ const thePuzzle15Game = (function () {
                 this.#element.style.background = cellWithNumberColour;
             }    
 
-            let displayNumbers = "";
-            let displayCanvas = "";
-            if (gameTypeIsNumbers) {
-                displayNumbers = "display:inline;"
-                displayCanvas = "display:none;"
-            } else {
-                displayNumbers = "display:none;"
-                displayCanvas = "display:inline;"
-            }
+            
     
 
             //const img = document.createElement("img");
@@ -495,7 +507,7 @@ const thePuzzle15Game = (function () {
         optNumbers.parentElement.classList.add("active");
         optPictures.parentElement.classList.remove("active");
         gameTypeIsNumbers = true;
-        resetGame();
+        //resetGame();
         if (optHard.parentElement.classList.contains("active")) {
             handlerOptHard();
         }
@@ -511,7 +523,7 @@ const thePuzzle15Game = (function () {
         optNumbers.parentElement.classList.remove("active");
         optPictures.parentElement.classList.add("active");
         gameTypeIsNumbers = false;
-        resetGame();
+        //resetGame();
         if (optHard.parentElement.classList.contains("active")) {
             handlerOptHard();
         }
@@ -564,6 +576,7 @@ const thePuzzle15Game = (function () {
     function randomizePuzzle () {
 
         resetGame();
+        gameLocked = false;
         
 
         function performRandomMove () {
@@ -607,7 +620,7 @@ const thePuzzle15Game = (function () {
         document.getElementById("totalMoves").innerText = totalMovesPlayed;
         timer.startTimer();
         gameStarted = true;
-        gameLocked = false;
+        
         
     }
 
