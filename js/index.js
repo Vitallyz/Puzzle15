@@ -7,7 +7,7 @@ const thePuzzle15Game = (function () {
     
     
     const cells = [];
-    const cellSize = 50;
+    const cellSize = 60;
     const cellSizeInternal = cellSize - 3;
     const tableSize =  cellSize * 4
     let modalView = "";
@@ -496,6 +496,15 @@ const thePuzzle15Game = (function () {
         optPictures.parentElement.classList.remove("active");
         gameTypeIsNumbers = true;
         resetGame();
+        if (optHard.parentElement.classList.contains("active")) {
+            handlerOptHard();
+        }
+        if (optEasy.parentElement.classList.contains("active")) {
+            handlerOptEasy();
+        }
+        if (optMed.parentElement.classList.contains("active")) {
+            handlerOptMed();
+        }
     }
 
     function handleOptPictures (element) {
@@ -503,6 +512,15 @@ const thePuzzle15Game = (function () {
         optPictures.parentElement.classList.add("active");
         gameTypeIsNumbers = false;
         resetGame();
+        if (optHard.parentElement.classList.contains("active")) {
+            handlerOptHard();
+        }
+        if (optEasy.parentElement.classList.contains("active")) {
+            handlerOptEasy();
+        }
+        if (optMed.parentElement.classList.contains("active")) {
+            handlerOptMed();
+        }
     }
 
     // fix for the window width 
