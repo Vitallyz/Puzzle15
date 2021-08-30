@@ -7,7 +7,7 @@ const thePuzzle15Game = (function () {
     
     
     const cells = [];
-    const cellSize = 90;
+    const cellSize = 80;
     const cellSizeInternal = cellSize - 3;
     const tableSize =  cellSize * 4
     let modalView = "";
