@@ -3,7 +3,7 @@ const thePuzzle15Game = (function () {
     
     const difficultyLevelEasy = 0;
     const difficultyLevelMed = 100;
-    const difficultyLevelHard = 400;
+    const difficultyLevelHard = 1000;
     
     
     const cells = [];
@@ -520,6 +520,8 @@ const thePuzzle15Game = (function () {
         if (optMed.parentElement.classList.contains("active")) {
             handlerOptMed();
         }
+
+        cells.forEach(element => element.renderCell());
     }
 
     function handleOptPictures (element) {
@@ -536,33 +538,10 @@ const thePuzzle15Game = (function () {
         if (optMed.parentElement.classList.contains("active")) {
             handlerOptMed();
         }
-    }
-
-    // fix for the window width 
-    function handleWindowResize() {
-        if (window.innerWidth < 475){
-            document.getElementById("puzzle15game").style.width = ~~(window.innerWidth  * 0.8) + "px";
-            document.getElementById("puzzle15game").style.height = ~~(window.innerWidth  * 0.8) + "px";
-        }
         
-        if (window.innerWidth < 475) {
-            for (i = 0; i < 16; i++) {
-                document.getElementById("canvas_" +i).style.width =  ~~(window.innerWidth  * 0.8)/4 + "px";
-                document.getElementById("canvas_" +i).style.height =  ~~(window.innerWidth  * 0.8)/4 + "px";
-            }
-        }
-
-        document.querySelectorAll("td").forEach(element => { 
-            if (window.innerWidth < 475) {
-                element.style.fontSize = "2em";
-            }
-            
-            
-        });
-            
+        cells.forEach(element => element.renderCell());
     }
 
-   // handleWindowResize();
 
     // hide modal view
     function handlerModalClose (element) {
