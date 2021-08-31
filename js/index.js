@@ -104,6 +104,10 @@ const thePuzzle15Game = (function () {
                 this.#value = "";
             }
             
+            this.#element.innerHTML = `<canvas id="canvas_${this.#id}" width="${cellSizeInternal}px" height="${cellSizeInternal}px" style="border:0px solid #d3d3d3; display: inline; visibility: hidden; top: 0; left: 0; border-radius: 4px; position: absolute;">
+            Your browser does not support the HTML5 canvas tag.
+            </canvas><span id="value_${this.#id}" style="visibility: visible;">${this.#value}</span>`;
+
             this.renderCell();   
         }
         // getters and setters
@@ -124,42 +128,33 @@ const thePuzzle15Game = (function () {
         }
 
         renderCell () {
+            document.getElementById(`value_${this.#id}`).innerText = this.#value;
 
             if (this.#id === emptyCell || gameLocked) {
                 this.#element.style.background = cellEmptyColour;
             } else {
                 this.#element.style.background = cellWithNumberColour;
             } 
-
-            let displayNumbers = "display:none; visibility: hidden;";
-            let displayCanvas = "display:inline; visibility: visible;";
-            let displayReference = "inline";
-            if (gameTypeIsNumbers) {
-                displayNumbers = "display:inline; visibility: visible;";
-                displayCanvas = "display:none; visibility: hidden;";
-                displayReference = "none";
-            } 
-
-
-          
             
-            this.#element.innerHTML = `<canvas id="canvas_${this.#id}" width="${cellSizeInternal}px" height="${cellSizeInternal}px" style="border:0px solid #d3d3d3; ${displayCanvas} top: 0; left: 0; border-radius: 4px; position: absolute;">
-            Your browser does not support the HTML5 canvas tag.
-            </canvas><span id="value_${this.#id}" style="${displayNumbers}">${this.#value}</span>`;
+            if (!gameTypeIsNumbers && this.#id !== emptyCell) {
+                document.getElementById(`canvas_${this.#id}`).style.visibility = "visible";
+                var c = document.getElementById(`canvas_${this.#id}`);
+                var ctx = c.getContext("2d");
+                
+                const x_offset = ((this.#value - 1) % 4) * cellSize;
+                const y_offset = ~~((this.#value - 1) / 4) * cellSize;
+                
+                setTimeout(function(){
+                    if (!pictureElement.naturalHeight) {
+                        console.log("The image does not exist yet: ", pictureElement);
+                    }
+                
+                    ctx.drawImage(pictureElement, x_offset, y_offset, cellSizeInternal, cellSizeInternal, 0, 0, cellSizeInternal, cellSizeInternal);
+                },10);
+            } else {
+                document.getElementById(`canvas_${this.#id}`).style.visibility = "hidden";
+            }
 
-            var c = document.getElementById(`canvas_${this.#id}`);
-            var ctx = c.getContext("2d");
-            
-            const x_offset = ((this.#value - 1) % 4) * cellSize;
-            const y_offset = ~~((this.#value - 1) / 4) * cellSize;
-            
-            setTimeout(function(){
-                if (!pictureElement.naturalHeight) {
-                    console.log("The image does not exist yet: ", pictureElement);
-                }
-            
-                ctx.drawImage(pictureElement, x_offset, y_offset, cellSizeInternal, cellSizeInternal, 0, 0, cellSizeInternal, cellSizeInternal);
-            },10);
         }
 
         clicked() {
