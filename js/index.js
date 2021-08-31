@@ -3,11 +3,11 @@ const thePuzzle15Game = (function () {
     
     const difficultyLevelEasy = 0;
     const difficultyLevelMed = 100;
-    const difficultyLevelHard = 200;
+    const difficultyLevelHard = 400;
     
     
     const cells = [];
-    const cellSize = 60;
+    const cellSize = 80;
     const cellSizeInternal = cellSize - 3;
     const tableSize =  cellSize * 4
     let modalView = "";
@@ -559,7 +559,7 @@ const thePuzzle15Game = (function () {
             
     }
 
-    handleWindowResize();
+   // handleWindowResize();
 
     // hide modal view
     function handlerModalClose (element) {
