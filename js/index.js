@@ -132,8 +132,11 @@ const thePuzzle15Game = (function () {
                 displayReference = "inline";
             }
 
-            const imgReference = document.getElementById("image");  
+            const imgReference = document.getElementById("refImage");  
             imgReference.src = `https://picsum.photos/id/237/${tableSize}/${tableSize}`;
+            imgReference.style.width = (tableSize - 4) + "px";
+            imgReference.style.height = (tableSize - 4) + "px";
+            imgReference.style.borderRadius = "4px";
             imgReference.style.display = displayReference;
       
             
