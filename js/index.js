@@ -123,12 +123,12 @@ const thePuzzle15Game = (function () {
             let displayCanvas = "";
             let displayReference = "";
             if (gameTypeIsNumbers) {
-                displayNumbers = "display:inline;";
-                displayCanvas = "display:none;";
+                displayNumbers = "display:inline; visibility: visible;";
+                displayCanvas = "display:none; visibility: hidden;";
                 displayReference = "none";
             } else {
-                displayNumbers = "display:none;"
-                displayCanvas = "display:inline;"
+                displayNumbers = "display:none; visibility: hidden;"
+                displayCanvas = "display:inline; visibility: visible;"
                 displayReference = "inline";
             }
 
