@@ -1,7 +1,7 @@
 
 const thePuzzle15Game = (function () {
     
-    const difficultyLevelEasy = 0;
+    const difficultyLevelEasy = 10;
     const difficultyLevelMed = 100;
     const difficultyLevelHard = 1000;
     
@@ -10,12 +10,14 @@ const thePuzzle15Game = (function () {
     const cellSize = 80;
     const cellSizeInternal = cellSize - 3;
     const tableSize =  cellSize * 4
+    const pictureElement = document.createElement("img");
     let modalView = "";
     let totalMovesPlayed = 0;
     let gameStarted = false;
     let gameLocked = true;
     let gameTypeIsNumbers = true;
     let difficultyLevel = 100; // the higher the number the longer the randumization process
+
 
 
     const timer = {
@@ -119,6 +121,13 @@ const thePuzzle15Game = (function () {
         }
 
         renderCell () {
+
+            if (this.#id === emptyCell || gameLocked) {
+                this.#element.style.background = cellEmptyColour;
+            } else {
+                this.#element.style.background = cellWithNumberColour;
+            } 
+
             let displayNumbers = "";
             let displayCanvas = "";
             let displayReference = "";
@@ -146,19 +155,7 @@ const thePuzzle15Game = (function () {
             
             
     
-            if (this.#id === emptyCell) {
-                this.#element.style.background = cellEmptyColour;
-            } else {
-                this.#element.style.background = cellWithNumberColour;
-            }    
-
             
-    
-
-            //const img = document.createElement("img");
-
-        
-            //img.src = "https://picsum.photos/id/237/400/400";
             
             img.id = `img_${this.#id}`;
             img.style.verticalAlign = "top";
@@ -189,28 +186,8 @@ const thePuzzle15Game = (function () {
             
                 ctx.drawImage(img, x_offset, y_offset, cellSizeInternal, cellSizeInternal, 0, 0, cellSizeInternal, cellSizeInternal);
             },10);
-            
-            
-
-            
-            // this.#element.innerHTML = `<img src="https://picsum.photos/97" id="img_${this.#id}" style="heigt:100px; vertical-align: top; 
-            // display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
-            
+                   
             this.#element.style.height = cellSize + "px";
-            // document.getElementById("cell_0").style.height = 100;
-
-
-            // } else { // if (this.#value = "") {
-                
-            //     this.#element.innerText = "";
-            //     this.#element.style.background = cellEmptyColour;
-
-            // }
-
-            //}
-            
-            
-                
         }
 
         clicked() {
@@ -553,12 +530,15 @@ const thePuzzle15Game = (function () {
 
     // functionalities
 
- 
+    function renderAll () {
+        cells.forEach (element => element.renderCell());
+    }
  
     function randomizePuzzle () {
 
         resetGame();
         gameLocked = false;
+        renderAll();
         
 
         function performRandomMove () {
