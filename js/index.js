@@ -2,7 +2,7 @@
 const thePuzzle15Game = (function () {
     
     const difficultyLevelEasy = 10;
-    const difficultyLevelMed = 100;
+    const difficultyLevelMed = 70;
     const difficultyLevelHard = 1000;
     
     
@@ -12,10 +12,10 @@ const thePuzzle15Game = (function () {
     const tableSize =  cellSize * 4
     const pictureElement = document.createElement("img");
     const accessKey = "ZpPmuN7qbgLY0rHUaL0dpbwTmI1hOwGTqic9l74w_0g";
-    const getRequest = `https://api.unsplash.com/photos?page=1&per_page=30&client_id=${accessKey}`;
+    const getRequest = `https://api.unsplash.com/search/photos?query=melbourne&page=1&per_page=30&client_id=${accessKey}`;
     const pictureUrls = [];
     let currentPictureID = 0;
-    let pictureURL = `https://picsum.photos/id/237/${tableSize}/${tableSize}`
+    let pictureURL = ``
     pictureElement.src = pictureURL;
     
     let modalView = "";
@@ -548,33 +548,37 @@ const thePuzzle15Game = (function () {
     }
 
     function handlerBttnPrev () {
-        console.log("handling PREV button");
         if (currentPictureID > 0) {
             currentPictureID--;    
         } else {
             currentPictureID = 29;
         }
-
+        if(gameStarted) {
+            timer.startTimer();
+        } 
         updatePictureElement(currentPictureID);
         renderAll();
         renderAll();
     }
 
     function handlerBttnRandom () {
-        console.log("handling RANDOM button");
         currentPictureID = getRandomPictureID();
+        if(gameStarted) {
+            timer.startTimer();
+        } 
         updatePictureElement(currentPictureID);
         renderAll();
     }
 
     function handlerBttnNext () {
-        console.log("handling NEXT button");
         if (currentPictureID < 29) {
             currentPictureID++;    
         } else {
             currentPictureID = 0;
         }
-
+        if(gameStarted) {
+            timer.startTimer();
+        } 
         updatePictureElement(currentPictureID);
         renderAll();
         renderAll();
@@ -605,7 +609,7 @@ const thePuzzle15Game = (function () {
             .then(response => response.json())
             .then(data => {
                 console.log("That is our API response: ", data)
-                data.forEach (element => {
+                data.results.forEach (element => {
                     const data = {};
                     data.url = (element.urls.full.split("?")[0]) + `?w=${tableSize}&h=${tableSize}&fm=jpg&fit=crop`;
                     data.credits = "Photo credits: " + `<a href=${(element.user.links.html)} target="_blank">${element.user.first_name}</a>`;
