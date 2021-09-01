@@ -323,11 +323,8 @@ const thePuzzle15Game = (function () {
         }
 
         isGameOver() {
-            for (let i = 0; i < 15; i++) {
-                if (parseInt(cells[i].value, 10) !== i + 1) {
-                    // console.log("Game not finished yet");
-                    return false;
-                }
+            if (!isGameOver()) {
+                return false;
             }
 
             // the game is over, lets lock it and show a modal window with the outcomes.
@@ -655,6 +652,17 @@ const thePuzzle15Game = (function () {
        
     }
 
+
+    function isGameOver() {
+        for (let i = 0; i < 15; i++) {
+            if (parseInt(cells[i].value, 10) !== i + 1) {
+                // console.log("Game not finished yet");
+                return false;
+            }
+        }
+        return true;
+    }
+
     function randomizePuzzle () {
 
         resetGame();
@@ -694,10 +702,13 @@ const thePuzzle15Game = (function () {
     
     
         }
-
-        for (let i = 0; i < difficultyLevel; i++) {
-            performRandomMove();
+        while (isGameOver()) {
+            console.log("Randomized moves solved the game, radomizing again!");
+            for (let i = 0; i < difficultyLevel; i++) {
+                performRandomMove();
+            }
         }
+        
 
         totalMovesPlayed = 0;
         document.getElementById("totalMoves").innerText = totalMovesPlayed;
