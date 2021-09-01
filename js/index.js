@@ -153,7 +153,7 @@ const thePuzzle15Game = (function () {
                 let success = false;
                 
                 function renderImageIfLoaded(id) {
-                    if (trials < 10) {
+                    if (trials < 50) {
                         if(id === 0) {
                             console.log("Trial number: ", trials);
                         }
@@ -168,7 +168,7 @@ const thePuzzle15Game = (function () {
                                 console.log("The image does not exist yet. Times tryied so far: ", trials++);
                             }setTimeout(function(){                            
                                 renderImageIfLoaded(id);    
-                            },500);
+                            },50);
                             
                         } 
                         
@@ -507,9 +507,9 @@ const thePuzzle15Game = (function () {
     }
 
     function handleOptNumbers (element) {
-        bttnPrev.classList.add("disabled");
-        bttnRandom.classList.add("disabled");
-        bttnNext.classList.add("disabled");
+        bttnPrev.parentElement.classList.add("disabled");
+        bttnRandom.parentElement.classList.add("disabled");
+        bttnNext.parentElement.classList.add("disabled");
         optNumbers.parentElement.classList.add("active");
         optPictures.parentElement.classList.remove("active");
         gameTypeIsNumbers = true;
@@ -529,9 +529,9 @@ const thePuzzle15Game = (function () {
     }
 
     function handleOptPictures (element) {
-        bttnPrev.classList.remove("disabled");
-        bttnRandom.classList.remove("disabled");
-        bttnNext.classList.remove("disabled");
+        bttnPrev.parentElement.classList.remove("disabled");
+        bttnRandom.parentElement.classList.remove("disabled");
+        bttnNext.parentElement.classList.remove("disabled");
         optNumbers.parentElement.classList.remove("active");
         optPictures.parentElement.classList.add("active");
         gameTypeIsNumbers = false;
@@ -551,6 +551,7 @@ const thePuzzle15Game = (function () {
     }
 
     function handlerBttnPrev () {
+        console.log("handling PREV button");
         if (currentPictureID > 0) {
             currentPictureID--;    
         } else {
@@ -559,22 +560,26 @@ const thePuzzle15Game = (function () {
 
         updatePictureElement(currentPictureID);
         renderAll();
+        renderAll();
     }
 
     function handlerBttnRandom () {
+        console.log("handling RANDOM button");
         currentPictureID = getRandomPictureID();
         updatePictureElement(currentPictureID);
         renderAll();
     }
 
     function handlerBttnNext () {
-        if (currentPictureID < 30) {
+        console.log("handling NEXT button");
+        if (currentPictureID < 29) {
             currentPictureID++;    
         } else {
             currentPictureID = 0;
         }
 
         updatePictureElement(currentPictureID);
+        renderAll();
         renderAll();
     }
 
@@ -625,8 +630,12 @@ const thePuzzle15Game = (function () {
     }
     
     function renderAll () {
-        cells.forEach (element => element.renderCell());
+        setTimeout(() => {
+            cells.forEach (element => element.renderCell());
+        }, 10)
+        
         displayReferencePicture();
+        console.log("Current photo id: ", currentPictureID);
     }
  
     function displayReferencePicture () {
@@ -644,10 +653,6 @@ const thePuzzle15Game = (function () {
             imgReferenceCredits.style.display = "block";
         }
        
-    }
-
-    function loadRandomImage () {
-
     }
 
     function randomizePuzzle () {
