@@ -11,6 +11,10 @@ const thePuzzle15Game = (function () {
     const cellSizeInternal = cellSize - 3;
     const tableSize =  cellSize * 4
     const pictureElement = document.createElement("img");
+    const accessKey = "ZpPmuN7qbgLY0rHUaL0dpbwTmI1hOwGTqic9l74w_0g";
+    const getRequest = `https://api.unsplash.com/photos?page=1&per_page=30&client_id=${accessKey}`;
+    const pictureUrls = [];
+    let currentPictureID = 0;
     let pictureURL = `https://picsum.photos/id/237/${tableSize}/${tableSize}`
     pictureElement.src = pictureURL;
     
@@ -153,27 +157,26 @@ const thePuzzle15Game = (function () {
                         if(id === 0) {
                             console.log("Trial number: ", trials);
                         }
-                        setTimeout(function(){
-                            if (pictureElement.naturalHeight) {
-                                ctx.drawImage(pictureElement, x_offset, y_offset, cellSizeInternal, cellSizeInternal, 0, 0, cellSizeInternal, cellSizeInternal);
-                                if(id === 0) {
-                                    console.log("The image loaded! Trials: ", trials);
-                                    success = true;
-                                }
-                            } else {
-                                if(id === 0) {
-                                    console.log("The image does not exist yet. Times tryied so far: ", trials++);
-                                }
-                                renderImageIfLoaded(id);
+                        if (pictureElement.naturalHeight) {
+                            ctx.drawImage(pictureElement, x_offset, y_offset, cellSizeInternal, cellSizeInternal, 0, 0, cellSizeInternal, cellSizeInternal);
+                            if(id === 0) {
+                                console.log("The image loaded! Trials: ", trials);
+                                success = true;
                             }
-                                
-                        },500);
+                        } else {
+                            if(id === 0) {
+                                console.log("The image does not exist yet. Times tryied so far: ", trials++);
+                            }setTimeout(function(){                            
+                                renderImageIfLoaded(id);    
+                            },500);
+                            
+                        } 
+                        
                     } else if (!success) {
                         console.log("Difficulties loading image!");
                         //alert("You are offlene! Switching to Numbers");
                         showModalOffline ();
                         handleOptNumbers (document.getElementById("opt-numbers"));
-
                     }  
                 }
 
@@ -372,6 +375,8 @@ const thePuzzle15Game = (function () {
             const element = document.getElementById(`cell_${id}`);
             cells[id] = new Cell(id, element);
         }
+
+        initPicturesArray ();
     }
     
     initialize();
@@ -461,6 +466,15 @@ const thePuzzle15Game = (function () {
     const optPictures = document.getElementById("opt-pictures");
     optPictures.addEventListener("click", handleOptPictures);
 
+    const bttnPrev = document.getElementById("bttn_prev");
+    bttnPrev.addEventListener("click", handlerBttnPrev);
+
+    const bttnRandom = document.getElementById("bttn_random");
+    bttnRandom.addEventListener("click", handlerBttnRandom);
+
+    const bttnNext = document.getElementById("bttn_next");
+    bttnNext.addEventListener("click", handlerBttnNext);
+
     
 
 
@@ -493,6 +507,9 @@ const thePuzzle15Game = (function () {
     }
 
     function handleOptNumbers (element) {
+        bttnPrev.classList.add("disabled");
+        bttnRandom.classList.add("disabled");
+        bttnNext.classList.add("disabled");
         optNumbers.parentElement.classList.add("active");
         optPictures.parentElement.classList.remove("active");
         gameTypeIsNumbers = true;
@@ -512,6 +529,9 @@ const thePuzzle15Game = (function () {
     }
 
     function handleOptPictures (element) {
+        bttnPrev.classList.remove("disabled");
+        bttnRandom.classList.remove("disabled");
+        bttnNext.classList.remove("disabled");
         optNumbers.parentElement.classList.remove("active");
         optPictures.parentElement.classList.add("active");
         gameTypeIsNumbers = false;
@@ -530,6 +550,34 @@ const thePuzzle15Game = (function () {
         displayReferencePicture ();
     }
 
+    function handlerBttnPrev () {
+        if (currentPictureID > 0) {
+            currentPictureID--;    
+        } else {
+            currentPictureID = 29;
+        }
+
+        updatePictureElement(currentPictureID);
+        renderAll();
+    }
+
+    function handlerBttnRandom () {
+        currentPictureID = getRandomPictureID();
+        updatePictureElement(currentPictureID);
+        renderAll();
+    }
+
+    function handlerBttnNext () {
+        if (currentPictureID < 30) {
+            currentPictureID++;    
+        } else {
+            currentPictureID = 0;
+        }
+
+        updatePictureElement(currentPictureID);
+        renderAll();
+    }
+
 
     // hide modal view
     function handlerModalClose (element) {
@@ -545,20 +593,55 @@ const thePuzzle15Game = (function () {
 
     // functionalities
 
+
+    function getRandomPictureID () {
+        return ~~(Math.random() * 29);
+    }
+
+    function initPicturesArray () {
+        fetch(getRequest)
+            .then(response => response.json())
+            .then(data => {
+                console.log("That is our API response: ", data)
+                data.forEach (element => {
+                    const data = {};
+                    data.url = (element.urls.full.split("?")[0]) + `?w=${tableSize}&h=${tableSize}&fm=jpg&fit=crop`;
+                    data.credits = "Photo credits: " + `<a href=${(element.user.links.html)} target="_blank">${element.user.first_name}</a>`;
+                    pictureUrls.push(data);
+                });
+                console.log("This is our pictures URLs: ", pictureUrls); 
+                currentPictureID = getRandomPictureID();
+                updatePictureElement(currentPictureID);
+                
+            })
+            .catch(error => console.log("We have an error geting the list from API: ", error));   
+    }
+
+    function updatePictureElement(pictureID) {
+        pictureURL = pictureUrls[pictureID].url;
+        pictureElement.src = pictureURL;
+        document.getElementById("credits").innerHTML = pictureUrls[pictureID].credits;
+        // console.log("We are showing picture number: ", currentPictureID);
+    }
+    
     function renderAll () {
         cells.forEach (element => element.renderCell());
+        displayReferencePicture();
     }
  
     function displayReferencePicture () {
         const imgReference = document.getElementById("refImage");  
+        const imgReferenceCredits = document.getElementById("credits");
         imgReference.src = pictureURL;
         imgReference.style.width = (tableSize - 4) + "px";
         imgReference.style.height = (tableSize - 4) + "px";
         imgReference.style.borderRadius = "4px";
         if (gameTypeIsNumbers) {
             imgReference.style.display = "none";
+            imgReferenceCredits.style.display = "none";
         } else {
             imgReference.style.display = "block";
+            imgReferenceCredits.style.display = "block";
         }
        
     }
