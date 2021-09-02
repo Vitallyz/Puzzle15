@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-sm">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" style="width: 250px; margin: 5px;">
-                        <label class="btn btn-outline-info btn-sm">
+                        <label class="btn btn-outline-info btn-sm active">
                             <input type="radio" name="options-easy" id="opt-easy" autocomplete="off"> Easy
                         </label>
                         <label class="btn btn-outline-info btn-sm">
@@ -51,22 +51,33 @@
             </div>
              
         </div>
-        <div class="row">
+        <div id="pictureNav" class="row d-none">
             <div class="col-sm">
                 <div class="btn-group btn-group-toggle gap-2" data-toggle="buttons" style="width: 250px; margin: 5px;">
-                    <label class="btn btn-outline-info btn-md disabled">
+                    <label class="btn btn-outline-info btn-md disabled" >
                         <input type="radio" name="prev picture"  autocomplete="off" id="bttn_prev"> Prev
                     </label>
-                    <label class="btn btn-outline-info btn-md disabled">
+                    <label class="btn btn-outline-info btn-md disabled" >
                         <input type="radio" name="random picture"  autocomplete="off" id="bttn_random"> Random
                     </label>
-                    <label class="btn btn-outline-info btn-md disabled">
+                    <label class="btn btn-outline-info btn-md disabled" >
                         <input type="radio" name="next picture"  autocomplete="off" id="bttn_next"> Next
                     </label>
                 </div>
             </div>
              
         </div>
+
+        <div id="refresh" class="row">
+          <div class="col-sm">
+              <div class="btn-group btn-group-toggle gap-2" data-toggle="buttons" style="width: 250px; margin: 5px;">
+                  <label class="btn btn-outline-info btn-md" >
+                      <input type="radio" name="prev picture"  autocomplete="off" id="bttn_refresh"> Refresh Puzzle
+                  </label>
+              </div>
+          </div>
+           
+      </div>
     </container>   
 
         <div class="container">
@@ -155,7 +166,7 @@
           </button> -->
         </div>
         <div class="modal-body text-start" id="offlineModalBodyMessage">
-          You are offline, swittching game to Numbers.
+          You are offline, or your internet is too slow. Swittching the game to the Numbers Puzzle.
         </div>
         <div class="modal-footer">
           <button id="closeModal_offline" type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>

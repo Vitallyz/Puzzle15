@@ -1,6 +1,6 @@
 
 const thePuzzle15Game = (function () {
-    
+
     const difficultyLevelEasy = 10;
     const difficultyLevelMed = 70;
     const difficultyLevelHard = 1000;
@@ -12,7 +12,7 @@ const thePuzzle15Game = (function () {
     const tableSize =  cellSize * 4
     const pictureElement = document.createElement("img");
     const accessKey = "ZpPmuN7qbgLY0rHUaL0dpbwTmI1hOwGTqic9l74w_0g";
-    const getRequest = `https://api.unsplash.com/search/photos?query=melbourne&page=1&per_page=30&client_id=${accessKey}`;
+    const getRequest = `https://api.unsplash.com/search/photos?query=melbourne&page=2&per_page=30&client_id=${accessKey}`;
     const pictureUrls = [];
     let currentPictureID = 0;
     let pictureURL = ``
@@ -24,8 +24,11 @@ const thePuzzle15Game = (function () {
     let gameStarted = false;
     let gameLocked = true;
     let gameTypeIsNumbers = true;
-    let difficultyLevel = 100; // the higher the number the longer the randumization process
-
+    let difficultyLevel = difficultyLevelEasy; 
+    const cellWithNumberColour = "#44CAF0";
+    const cellEmptyColour = "#79DEF5";
+    let emptyCell = 15;
+    const loadPictureAttempts = 100;
 
 
     const timer = {
@@ -88,12 +91,7 @@ const thePuzzle15Game = (function () {
             return `${minutes}${seconds}`;
         }
     }
-
-    const cellWithNumberColour = "#44CAF0";
-    const cellEmptyColour = "#79DEF5";
-
-    let emptyCell = 15;
-
+  
     class Cell {
         #id;
         #element;
@@ -115,6 +113,7 @@ const thePuzzle15Game = (function () {
 
             this.renderCell();   
         }
+
         // getters and setters
         get id() {
             return this.#id;
@@ -141,6 +140,7 @@ const thePuzzle15Game = (function () {
                 this.#element.style.background = cellWithNumberColour;
             } 
             
+            // inserting a tile of picture in a cell
             if (!gameTypeIsNumbers && this.#id !== emptyCell) {
                 document.getElementById(`canvas_${this.#id}`).style.visibility = "visible";
                 var c = document.getElementById(`canvas_${this.#id}`);
@@ -155,28 +155,29 @@ const thePuzzle15Game = (function () {
                 function renderImageIfLoaded(id) {
                     if (trials < 50) {
                         if(id === 0) {
-                            console.log("Trial number: ", trials);
+                            // console.warn("Loading image, attempt: ", trials);
                         }
                         if (pictureElement.naturalHeight) {
                             ctx.drawImage(pictureElement, x_offset, y_offset, cellSizeInternal, cellSizeInternal, 0, 0, cellSizeInternal, cellSizeInternal);
                             if(id === 0) {
-                                console.log("The image loaded! Trials: ", trials);
+                                console.log("The image loaded! Number of retries: ", trials - 1);
                                 success = true;
                             }
                         } else {
                             if(id === 0) {
-                                console.log("The image does not exist yet. Times tryied so far: ", trials++);
+                                console.log("Attempt to load an image for tiling");
+                                trials++;
                             }setTimeout(function(){                            
                                 renderImageIfLoaded(id);    
-                            },50);
+                            }, loadPictureAttempts);
                             
                         } 
                         
                     } else if (!success) {
-                        console.log("Difficulties loading image!");
-                        //alert("You are offlene! Switching to Numbers");
+                        console.warn("Difficulties loading image!");
+                        //alert("You are offline! Switching to Numbers");
                         showModalOffline ();
-                        handleOptNumbers (document.getElementById("opt-numbers"));
+                        handleOptNumbers ();
                     }  
                 }
 
@@ -195,7 +196,7 @@ const thePuzzle15Game = (function () {
             }
             // Lets check if clicked on empty cell
             if (this.#id === emptyCell) {
-                console.log("Clicked on empty cell");
+                // console.log("Clicked on empty cell");
                 return;
             }
 
@@ -356,7 +357,6 @@ const thePuzzle15Game = (function () {
 
     // initializing array of Cell class instances 
     function initialize () {
-        
         pictureElement.style.verticalAlign = "top";
         pictureElement.style.borderRadius = "4px";
         pictureElement.style.display = "inline";
@@ -374,6 +374,7 @@ const thePuzzle15Game = (function () {
         }
 
         initPicturesArray ();
+        randomizePuzzle();
     }
     
     initialize();
@@ -434,15 +435,11 @@ const thePuzzle15Game = (function () {
         return ~~(score*100) * 2;
     }
 
-    
-    //event listener for windows resize (probably need to remove this functionality)
-    //window.addEventListener("resize", handleWindowResize);
-
     // even listener for modal close button
     document.getElementById("colseModal").addEventListener("click", handlerModalClose);
     document.getElementById("closeModal_offline").addEventListener("click", handlerOfflineModalClose)
 
-    // Add event listeners to all cells in the table
+    // event listeners to all cells in the table
     for (let id = 0; id < 16; id++) {
         cells[id].element.addEventListener("click", clickHandler);
     }
@@ -472,6 +469,8 @@ const thePuzzle15Game = (function () {
     const bttnNext = document.getElementById("bttn_next");
     bttnNext.addEventListener("click", handlerBttnNext);
 
+    document.getElementById("bttn_refresh").addEventListener("click", handleRefreshBttn);
+
     
 
 
@@ -482,6 +481,9 @@ const thePuzzle15Game = (function () {
     }
 
     function handlerOptEasy(element){
+        if (optEasy.parentElement.classList.contains("active")) {
+            return;
+        }
         optEasy.parentElement.classList.add("active");
         optMed.parentElement.classList.remove("active");
         optHard.parentElement.classList.remove("active");
@@ -489,6 +491,9 @@ const thePuzzle15Game = (function () {
         randomizePuzzle ();
     }
     function handlerOptMed(element){
+        if (optMed.parentElement.classList.contains("active")) {
+            return;
+        }
         optEasy.parentElement.classList.remove("active");
         optMed.parentElement.classList.add("active");
         optHard.parentElement.classList.remove("active");
@@ -496,6 +501,9 @@ const thePuzzle15Game = (function () {
         randomizePuzzle ();
     }
     function handlerOptHard(element){
+        if (optHard.parentElement.classList.contains("active")) {
+            return;
+        }
         optEasy.parentElement.classList.remove("active");
         optMed.parentElement.classList.remove("active");
         optHard.parentElement.classList.add("active");
@@ -504,6 +512,13 @@ const thePuzzle15Game = (function () {
     }
 
     function handleOptNumbers (element) {
+
+        if (optNumbers.parentElement.classList.contains("active")) {
+            return;
+        }
+
+        document.getElementById("pictureNav").classList.add("d-none");
+
         bttnPrev.parentElement.classList.add("disabled");
         bttnRandom.parentElement.classList.add("disabled");
         bttnNext.parentElement.classList.add("disabled");
@@ -526,9 +541,19 @@ const thePuzzle15Game = (function () {
     }
 
     function handleOptPictures (element) {
+
+        if (optPictures.parentElement.classList.contains("active")) {
+            return;
+        }
+
+
+        document.getElementById("pictureNav").classList.remove("d-none");
+
+        
         bttnPrev.parentElement.classList.remove("disabled");
         bttnRandom.parentElement.classList.remove("disabled");
         bttnNext.parentElement.classList.remove("disabled");
+        
         optNumbers.parentElement.classList.remove("active");
         optPictures.parentElement.classList.add("active");
         gameTypeIsNumbers = false;
@@ -557,8 +582,7 @@ const thePuzzle15Game = (function () {
             timer.startTimer();
         } 
         updatePictureElement(currentPictureID);
-        renderAll();
-        renderAll();
+        randomizePuzzle();
     }
 
     function handlerBttnRandom () {
@@ -567,7 +591,7 @@ const thePuzzle15Game = (function () {
             timer.startTimer();
         } 
         updatePictureElement(currentPictureID);
-        renderAll();
+        randomizePuzzle();
     }
 
     function handlerBttnNext () {
@@ -580,8 +604,11 @@ const thePuzzle15Game = (function () {
             timer.startTimer();
         } 
         updatePictureElement(currentPictureID);
-        renderAll();
-        renderAll();
+        randomizePuzzle();
+    }
+
+    function handleRefreshBttn() {
+        randomizePuzzle();
     }
 
 
@@ -608,14 +635,14 @@ const thePuzzle15Game = (function () {
         fetch(getRequest)
             .then(response => response.json())
             .then(data => {
-                console.log("That is our API response: ", data)
+                // console.log("That is our API response: ", data)
                 data.results.forEach (element => {
                     const data = {};
                     data.url = (element.urls.full.split("?")[0]) + `?w=${tableSize}&h=${tableSize}&fm=jpg&fit=crop`;
                     data.credits = "Photo credits: " + `<a href=${(element.user.links.html)} target="_blank">${element.user.first_name}</a>`;
                     pictureUrls.push(data);
                 });
-                console.log("This is our pictures URLs: ", pictureUrls); 
+                // console.log("This is our pictures URLs: ", pictureUrls); 
                 currentPictureID = getRandomPictureID();
                 updatePictureElement(currentPictureID);
                 
@@ -704,22 +731,20 @@ const thePuzzle15Game = (function () {
                 }
             }
     
-    
         }
+        
+        // make sure that random moves are not ended up with solved puzzle
         while (isGameOver()) {
-            console.log("Randomized moves solved the game, radomizing again!");
+            // console.log("Randomized moves solved the game, radomizing again!");
             for (let i = 0; i < difficultyLevel; i++) {
                 performRandomMove();
             }
         }
-        
 
         totalMovesPlayed = 0;
         document.getElementById("totalMoves").innerText = totalMovesPlayed;
         timer.startTimer();
         gameStarted = true;
-        
-        
     }
 
  
@@ -745,21 +770,13 @@ const thePuzzle15Game = (function () {
         movesText = `${totalMovesPlayed} move`;
     }
 
-
     let bodyMessage = `You solved the puzzle in ${movesText} in just ${timer.timeString()}!${scoreText}`;
     console.log(bodyMessage);
     document.getElementById("modalBodyMessage").innerText = bodyMessage;
     modalView.show();
 
-}
-
- 
-/* document.getElementById("cell_0").innerHTML = `<img src="https://picsum.photos/97" style="vertical-align: top; display: inline; border-radius: 4px; position: absolute; top: 0; left: 0;">`;
-document.getElementById("cell_0").style.padding ="0";
-document.getElementById("cell_0").style.margin ="0";
-document.getElementById("cell_0").style.height = 100; */
-
+    }
 
 })(document);
 
-
+// this code is written by Vitally Zilber for a JavaScript Project assesment in 2021. 
